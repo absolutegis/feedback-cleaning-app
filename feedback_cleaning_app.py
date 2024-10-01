@@ -16,15 +16,22 @@ def categorize_response(response):
 
 # Main function for the app
 def main():
+    # Set the page layout to full screen
+    st.set_page_config(page_title="Feedback Cleaning App", layout="wide")
+
     st.title("Feedback Cleaning and Summarization App for HUBZone Council")
     
+    # Inform users that the first two tables are just samples
+    st.markdown("**Note**: The first two tables below are samples to give you an idea of the data before and after cleaning.")
+
     # Step 1: File Upload
     uploaded_file = st.file_uploader("Upload CSV file", type="csv")
     
     if uploaded_file:
         df = pd.read_csv(uploaded_file)
 
-        st.write("Original Data", df.head())
+        # Show sample of the original data
+        st.write("Original Data (Sample)", df.head())
 
         # Step 2: Data Cleaning and Scrubbing
         df_cleaned = df.dropna(how='all').applymap(lambda x: x.lower() if isinstance(x, str) else x)
@@ -36,7 +43,8 @@ def main():
         for col in feedback_columns:
             df_cleaned[col + " (Categorized)"] = df_cleaned[col].apply(categorize_response)
 
-        st.write("Cleaned Data", df_cleaned.head())
+        # Show sample of the cleaned data
+        st.write("Cleaned Data (Sample)", df_cleaned.head())
 
         # Step 3: Generate Summary
         summary = {}
