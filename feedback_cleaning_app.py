@@ -1,6 +1,7 @@
 import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
+import plotly.express as px
 import io
 
 # Scrubber function to categorize responses
@@ -55,13 +56,15 @@ def main():
         summary_df = pd.DataFrame(summary).T
         st.write("Summary", summary_df)
 
-        # Step 4: Visuals
+        # Step 4: Visuals with Plotly for interactive hover functionality
         for col in summary_df.index:
             st.write(f"Summary of {col}")
-            fig, ax = plt.subplots()
-            summary_df.loc[col].plot(kind='bar', ax=ax, color=['gray', 'yellow', 'red', 'green'])
-            ax.set_ylabel('Number of Responses')
-            st.pyplot(fig)
+            fig = px.bar(summary_df.loc[col].reset_index(), 
+                         x='index', y=col, 
+                         labels={'index': 'Response Type', col: 'Number of Responses'},
+                         title=col)
+            fig.update_traces(marker_color=['gray', 'yellow', 'red', 'green'], hoverinfo='y')
+            st.plotly_chart(fig)
 
         # Step 5: Download Cleaned File (In-Memory Buffer)
         cleaned_csv = io.StringIO()
