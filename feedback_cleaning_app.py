@@ -16,7 +16,7 @@ def categorize_response(response):
 
 # Main function for the app
 def main():
-    st.title("Feedback Cleaning and Summarization App")
+    st.title("Feedback Cleaning and Summarization App for HUBZone Council")
     
     # Step 1: File Upload
     uploaded_file = st.file_uploader("Upload CSV file", type="csv")
